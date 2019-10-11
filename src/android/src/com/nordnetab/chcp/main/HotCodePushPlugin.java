@@ -100,7 +100,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
         cleanupFileSystemFromOldReleases();
 
         handler = new Handler();
-        fileStructure = new PluginFilesStructure(cordova.getActivity(), pluginInternalPrefs.getCurrentReleaseVersionName());
+        fileStructure = new PluginFilesStructure(cordova.getActivity(),
+                pluginInternalPrefs.getCurrentReleaseVersionName());
         appConfigStorage = new ApplicationConfigStorage();
         defaultCallbackStoredResults = new ArrayList<PluginResult>();
     }
@@ -130,10 +131,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
         }
 
         // install update if there is anything to install
-        if (chcpXmlConfig.isAutoInstallIsAllowed() &&
-                !UpdatesInstaller.isInstalling() &&
-                !UpdatesLoader.isExecuting() &&
-                !TextUtils.isEmpty(pluginInternalPrefs.getReadyForInstallationReleaseVersionName())) {
+        if (chcpXmlConfig.isAutoInstallIsAllowed() && !UpdatesInstaller.isInstalling() && !UpdatesLoader.isExecuting()
+                && !TextUtils.isEmpty(pluginInternalPrefs.getReadyForInstallationReleaseVersionName())) {
             installUpdate(null);
         }
     }
@@ -146,14 +145,13 @@ public class HotCodePushPlugin extends CordovaPlugin {
             return;
         }
 
-        if (!chcpXmlConfig.isAutoInstallIsAllowed() ||
-                UpdatesInstaller.isInstalling() ||
-                UpdatesLoader.isExecuting() ||
-                TextUtils.isEmpty(pluginInternalPrefs.getReadyForInstallationReleaseVersionName())) {
+        if (!chcpXmlConfig.isAutoInstallIsAllowed() || UpdatesInstaller.isInstalling() || UpdatesLoader.isExecuting()
+                || TextUtils.isEmpty(pluginInternalPrefs.getReadyForInstallationReleaseVersionName())) {
             return;
         }
 
-        final PluginFilesStructure fs = new PluginFilesStructure(cordova.getActivity(), pluginInternalPrefs.getReadyForInstallationReleaseVersionName());
+        final PluginFilesStructure fs = new PluginFilesStructure(cordova.getActivity(),
+                pluginInternalPrefs.getReadyForInstallationReleaseVersionName());
         final ApplicationConfig appConfig = appConfigStorage.loadFromFolder(fs.getDownloadFolder());
         if (appConfig == null) {
             return;
@@ -177,9 +175,9 @@ public class HotCodePushPlugin extends CordovaPlugin {
     // region Plugin external properties
 
     /**
-     * Setter for default fetch update options.
-     * If this one is defined and no options has come form JS side - we use them.
-     * If preferences came from JS side - we ignore the default ones.
+     * Setter for default fetch update options. If this one is defined and no
+     * options has come form JS side - we use them. If preferences came from JS side
+     * - we ignore the default ones.
      *
      * @param options options
      */
@@ -262,9 +260,9 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Send message to default plugin callback.
-     * Default callback - is a callback that we receive on initialization (device ready).
-     * Through it we are broadcasting different events.
+     * Send message to default plugin callback. Default callback - is a callback
+     * that we receive on initialization (device ready). Through it we are
+     * broadcasting different events.
      * <p/>
      * If callback is not set yet - message will be stored until it is initialized.
      *
@@ -308,8 +306,10 @@ public class HotCodePushPlugin extends CordovaPlugin {
         dispatchDefaultCallbackStoredResults();
 
         // Clear web history.
-        // In some cases this is necessary, because on the launch we redirect user to the
-        // external storage. And if he presses back button - browser will lead him back to
+        // In some cases this is necessary, because on the launch we redirect user to
+        // the
+        // external storage. And if he presses back button - browser will lead him back
+        // to
         // assets folder, which we don't want.
         handler.post(new Runnable() {
             @Override
@@ -320,15 +320,14 @@ public class HotCodePushPlugin extends CordovaPlugin {
         });
 
         // fetch update when we are initialized
-        if (chcpXmlConfig.isAutoDownloadIsAllowed() &&
-                !UpdatesInstaller.isInstalling() && !UpdatesLoader.isExecuting()) {
+        if (chcpXmlConfig.isAutoDownloadIsAllowed() && !UpdatesInstaller.isInstalling()
+                && !UpdatesLoader.isExecuting()) {
             fetchUpdate();
         }
     }
 
     /**
-     * Check for update.
-     * Method is called from JS side.
+     * Check for update. Method is called from JS side.
      *
      * @param callback js callback
      */
@@ -348,8 +347,7 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Install the update.
-     * Method is called from JS side.
+     * Install the update. Method is called from JS side.
      *
      * @param callback js callback
      */
@@ -363,14 +361,16 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Send to JS side event with message, that plugin is installing assets on the external storage and not yet ready for work.
-     * That happens only on the first launch.
+     * Send to JS side event with message, that plugin is installing assets on the
+     * external storage and not yet ready for work. That happens only on the first
+     * launch.
      *
      * @param eventName event name, that is send to JS side
      * @param callback  JS callback
      */
     private void sendPluginNotReadyToWork(String eventName, CallbackContext callback) {
-        PluginResult pluginResult = PluginResultHelper.createPluginResult(eventName, null, ChcpError.ASSETS_FOLDER_IN_NOT_YET_INSTALLED);
+        PluginResult pluginResult = PluginResultHelper.createPluginResult(eventName, null,
+                ChcpError.ASSETS_FOLDER_IN_NOT_YET_INSTALLED);
         callback.sendPluginResult(pluginResult);
     }
 
@@ -473,8 +473,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
     /**
      * Perform update availability check.
      *
-     * @param jsCallback callback where to send the result;
-     *                   used, when update is requested manually from JavaScript
+     * @param jsCallback callback where to send the result; used, when update is
+     *                   requested manually from JavaScript
      */
     private void fetchUpdate(CallbackContext jsCallback, FetchUpdateOptions fetchOptions) {
         if (!isPluginReadyForWork) {
@@ -495,16 +495,15 @@ public class HotCodePushPlugin extends CordovaPlugin {
         }
 
         final UpdateDownloadRequest request = UpdateDownloadRequest.builder(cordova.getActivity())
-                .setConfigURL(configURL)
-                .setCurrentNativeVersion(chcpXmlConfig.getNativeInterfaceVersion())
+                .setConfigURL(configURL).setCurrentNativeVersion(chcpXmlConfig.getNativeInterfaceVersion())
                 .setCurrentReleaseVersion(pluginInternalPrefs.getCurrentReleaseVersionName())
-                .setRequestHeaders(requestHeaders)
-                .build();
+                .setRequestHeaders(requestHeaders).build();
 
         final ChcpError error = UpdatesLoader.downloadUpdate(request);
         if (error != ChcpError.NONE) {
             if (jsCallback != null) {
-                PluginResult errorResult = PluginResultHelper.createPluginResult(UpdateDownloadErrorEvent.EVENT_NAME, null, error);
+                PluginResult errorResult = PluginResultHelper.createPluginResult(UpdateDownloadErrorEvent.EVENT_NAME,
+                        null, error);
                 jsCallback.sendPluginResult(errorResult);
             }
             return;
@@ -518,18 +517,21 @@ public class HotCodePushPlugin extends CordovaPlugin {
     /**
      * Install update if any available.
      *
-     * @param jsCallback callback where to send the result;
-     *                   used, when installation os requested manually from JavaScript
+     * @param jsCallback callback where to send the result; used, when installation
+     *                   os requested manually from JavaScript
      */
     private void installUpdate(CallbackContext jsCallback) {
         if (!isPluginReadyForWork) {
             return;
         }
 
-        ChcpError error = UpdatesInstaller.install(cordova.getActivity(), pluginInternalPrefs.getReadyForInstallationReleaseVersionName(), pluginInternalPrefs.getCurrentReleaseVersionName());
+        ChcpError error = UpdatesInstaller.install(cordova.getActivity(),
+                pluginInternalPrefs.getReadyForInstallationReleaseVersionName(),
+                pluginInternalPrefs.getCurrentReleaseVersionName());
         if (error != ChcpError.NONE) {
             if (jsCallback != null) {
-                PluginResult errorResult = PluginResultHelper.createPluginResult(UpdateInstallationErrorEvent.EVENT_NAME, null, error);
+                PluginResult errorResult = PluginResultHelper
+                        .createPluginResult(UpdateInstallationErrorEvent.EVENT_NAME, null, error);
                 jsCallback.sendPluginResult(errorResult);
             }
 
@@ -568,9 +570,11 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Check if application has been updated through the Google Play since the last launch.
+     * Check if application has been updated through the Google Play since the last
+     * launch.
      *
-     * @return <code>true</code> if application was update; <code>false</code> - otherwise
+     * @return <code>true</code> if application was update; <code>false</code> -
+     *         otherwise
      */
     private boolean isApplicationHasBeenUpdated() {
         return pluginInternalPrefs.getAppBuildVersion() != VersionHelper.applicationVersionCode(cordova.getActivity());
@@ -588,17 +592,20 @@ public class HotCodePushPlugin extends CordovaPlugin {
             pluginInternalPrefs.setReadyForInstallationReleaseVersionName("");
             pluginInternalPrefs.setPreviousReleaseVersionName("");
 
-            final ApplicationConfig appConfig = ApplicationConfig.configFromAssets(cordova.getActivity(), PluginFilesStructure.CONFIG_FILE_NAME);
+            final ApplicationConfig appConfig = ApplicationConfig.configFromAssets(cordova.getActivity(),
+                    PluginFilesStructure.CONFIG_FILE_NAME);
             pluginInternalPrefs.setCurrentReleaseVersionName(appConfig.getContentConfig().getReleaseVersion());
 
             pluginInternalPrefsStorage.storeInPreference(pluginInternalPrefs);
         }
 
-        AssetsHelper.copyAssetDirectoryToAppDirectory(cordova.getActivity().getApplicationContext(), WWW_FOLDER, fileStructure.getWwwFolder());
+        AssetsHelper.copyAssetDirectoryToAppDirectory(cordova.getActivity().getApplicationContext(), WWW_FOLDER,
+                fileStructure.getWwwFolder());
     }
 
     /**
-     * Redirect user onto the page, that resides on the external storage instead of the assets folder.
+     * Redirect user onto the page, that resides on the external storage instead of
+     * the assets folder.
      */
     private void redirectToLocalStorageIndexPage() {
         final String indexPage = getStartingPage();
@@ -622,10 +629,31 @@ public class HotCodePushPlugin extends CordovaPlugin {
             Log.d("CHCP", "External starting page not found. Aborting page change.");
             return;
         }
+        try {
+            Log.d("CHCP", "begin restart app");
+            String basePath = fileStructure.getWwwFolder();
+            // 尝试重置本地服务器根目录为当前热更新后的外置存储路径
+            Class[] cArg = new Class[1];
+            cArg[0] = String.class;
+            // 此处重置loacalserver的根目录
+            webView.getEngine().getClass().getDeclaredMethod("setServerBasePath", cArg).invoke(webView.getEngine(),
+                    basePath);
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
 
-        // load index page from the external source
-        external = Paths.get(fileStructure.getWwwFolder(), indexPage);
-        webView.loadUrlIntoView(FILE_PREFIX + external, false);
+        }
 
         Log.d("CHCP", "Loading external page: " + external);
     }
@@ -663,8 +691,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Listener for event that assets folder are now installed on the external storage.
-     * From that moment all content will be displayed from it.
+     * Listener for event that assets folder are now installed on the external
+     * storage. From that moment all content will be displayed from it.
      *
      * @param event event details
      * @see AssetsInstalledEvent
@@ -684,15 +712,15 @@ public class HotCodePushPlugin extends CordovaPlugin {
         PluginResult result = PluginResultHelper.pluginResultFromEvent(event);
         sendMessageToDefaultCallback(result);
 
-        if (chcpXmlConfig.isAutoDownloadIsAllowed() &&
-                !UpdatesInstaller.isInstalling() && !UpdatesLoader.isExecuting()) {
+        if (chcpXmlConfig.isAutoDownloadIsAllowed() && !UpdatesInstaller.isInstalling()
+                && !UpdatesLoader.isExecuting()) {
             fetchUpdate();
         }
     }
 
     /**
-     * Listener for event that we failed to install assets folder on the external storage.
-     * If so - nothing we can do, plugin is not gonna work.
+     * Listener for event that we failed to install assets folder on the external
+     * storage. If so - nothing we can do, plugin is not gonna work.
      *
      * @param event event details
      * @see AssetsInstallationErrorEvent
@@ -746,8 +774,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Listener for event that there is no update available at the moment.
-     * We are as fresh as possible.
+     * Listener for event that there is no update available at the moment. We are as
+     * fresh as possible.
      *
      * @param event event information
      * @see EventBus
@@ -761,7 +789,7 @@ public class HotCodePushPlugin extends CordovaPlugin {
 
         PluginResult jsResult = PluginResultHelper.pluginResultFromEvent(event);
 
-        //notify JS
+        // notify JS
         if (downloadJsCallback != null) {
             downloadJsCallback.sendPluginResult(jsResult);
             downloadJsCallback = null;
@@ -789,7 +817,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
     }
 
     /**
-     * Listener for event that some error has happened during the update download process.
+     * Listener for event that some error has happened during the update download
+     * process.
      *
      * @param event event information
      * @see EventBus
@@ -802,7 +831,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
         Log.d("CHCP", "Failed to update");
 
         final ChcpError error = event.error();
-        if (error == ChcpError.LOCAL_VERSION_OF_APPLICATION_CONFIG_NOT_FOUND || error == ChcpError.LOCAL_VERSION_OF_MANIFEST_NOT_FOUND) {
+        if (error == ChcpError.LOCAL_VERSION_OF_APPLICATION_CONFIG_NOT_FOUND
+                || error == ChcpError.LOCAL_VERSION_OF_MANIFEST_NOT_FOUND) {
             Log.d("CHCP", "Can't load application config from installation folder. Reinstalling external folder");
             installWwwFolder();
         }
@@ -927,14 +957,12 @@ public class HotCodePushPlugin extends CordovaPlugin {
         }
 
         CleanUpHelper.removeReleaseFolders(cordova.getActivity(),
-                new String[]{pluginInternalPrefs.getCurrentReleaseVersionName(),
+                new String[] { pluginInternalPrefs.getCurrentReleaseVersionName(),
                         pluginInternalPrefs.getPreviousReleaseVersionName(),
-                        pluginInternalPrefs.getReadyForInstallationReleaseVersionName()
-                }
-        );
+                        pluginInternalPrefs.getReadyForInstallationReleaseVersionName() });
     }
 
-    //endregion
+    // endregion
 
     // region Rollback process
 
@@ -944,8 +972,8 @@ public class HotCodePushPlugin extends CordovaPlugin {
      * @param error error, based on which we will decide
      */
     private void rollbackIfCorrupted(ChcpError error) {
-        if (error != ChcpError.LOCAL_VERSION_OF_APPLICATION_CONFIG_NOT_FOUND &&
-                error != ChcpError.LOCAL_VERSION_OF_MANIFEST_NOT_FOUND) {
+        if (error != ChcpError.LOCAL_VERSION_OF_APPLICATION_CONFIG_NOT_FOUND
+                && error != ChcpError.LOCAL_VERSION_OF_MANIFEST_NOT_FOUND) {
             return;
         }
 

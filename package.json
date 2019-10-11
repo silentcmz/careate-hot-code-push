@@ -1,9 +1,9 @@
 {
-  "name": "cordova-hot-code-push-plugin",
-  "version": "1.5.3",
+  "name": "careate-hot-code-push-plugin",
+  "version": "1.0.2",
   "description": "Cordova plugin to perform code updates on the fly",
   "cordova": {
-    "id": "cordova-hot-code-push-plugin",
+    "id": "careate-hot-code-push-plugin",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nordnet/cordova-hot-code-push.git"
+    "url": "git+https://github.com/silentcmz/careate-hot-code-push.git"
   },
   "keywords": [
     "cordova",
@@ -40,7 +40,7 @@
   "author": "Nikolay Demyankov for Nordnet Bank AB",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nordnet/cordova-hot-code-push/issues"
+    "url": "https://github.com/silentcmz/careate-hot-code-push/issues"
   },
-  "homepage": "https://github.com/nordnet/cordova-hot-code-push#readme"
+  "homepage": "https://github.com/silentcmz/careate-hot-code-push#readme"
 }

@@ -9,7 +9,7 @@
 
 #pragma mark Predefined folders and file names of the plugin
 
-static NSString *const CHCP_FOLDER = @"cordova-hot-code-push-plugin";
+static NSString *const CHCP_FOLDER = @"teh-hot-code-push-plugin";
 static NSString *const DOWNLOAD_FOLDER = @"update";
 static NSString *const WWWW_FOLDER = @"www";
 static NSString *const CHCP_JSON_FILE_PATH = @"chcp.json";
@@ -45,7 +45,7 @@ static NSString *const CHCP_MANIFEST_FILE_PATH = @"chcp.manifest";
 
     // construct path to the folder, where we will store our plugin's files
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *supportDir = [fileManager applicationSupportDirectory];
+    NSURL *supportDir = [fileManager applicationCacheDirectory];
     _pluginRootFolder = [supportDir URLByAppendingPathComponent:CHCP_FOLDER isDirectory:YES];
     if (![fileManager fileExistsAtPath:_pluginRootFolder.path]) {
         [fileManager createDirectoryAtURL:_pluginRootFolder withIntermediateDirectories:YES attributes:nil error:nil];
