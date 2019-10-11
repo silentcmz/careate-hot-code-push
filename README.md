@@ -58,7 +58,7 @@ In this guide we will show how quickly you can test this plugin and start using 
 2. Add plugin:
 
   ```sh
-  cordova plugin add cordova-hot-code-push-plugin
+  cordova plugin add careate-hot-code-push-plugin
   ```
 
 3. Add plugin for local development:
