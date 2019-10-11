@@ -9,7 +9,7 @@
 
 #pragma mark Predefined folders and file names of the plugin
 
-static NSString *const CHCP_FOLDER = @"teh-hot-code-push-plugin";
+static NSString *const CHCP_FOLDER = @"careate-hot-code-push-plugin";
 static NSString *const DOWNLOAD_FOLDER = @"update";
 static NSString *const WWWW_FOLDER = @"www";
 static NSString *const CHCP_JSON_FILE_PATH = @"chcp.json";

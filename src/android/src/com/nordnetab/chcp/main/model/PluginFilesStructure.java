@@ -22,7 +22,7 @@ public class PluginFilesStructure {
      */
     public static final String MANIFEST_FILE_NAME = "chcp.manifest";
 
-    private static final String PLUGIN_FOLDER = "cordova-hot-code-push-plugin";
+    private static final String PLUGIN_FOLDER = "careate-hot-code-push-plugin";
 
     private static final String MAIN_CONTENT_FOLDER = "www";
     private static final String DOWNLOAD_FOLDER = "update";
