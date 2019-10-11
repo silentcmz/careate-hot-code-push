@@ -51,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -635,7 +636,6 @@ public class HotCodePushPlugin extends CordovaPlugin {
             // 尝试重置本地服务器根目录为当前热更新后的外置存储路径
             Class[] cArg = new Class[1];
             cArg[0] = String.class;
-            // 此处重置loacalserver的根目录
             webView.getEngine().getClass().getDeclaredMethod("setServerBasePath", cArg).invoke(webView.getEngine(),
                     basePath);
         } catch (NoSuchMethodException e) {
